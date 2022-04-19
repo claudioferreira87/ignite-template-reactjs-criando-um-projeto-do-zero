@@ -139,9 +139,9 @@ export default function Post({ post }: PostProps): JSX.Element {
 export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
   const posts = await prismic.query(
-    [Prismic.predicates.at('document.type', 'posts')],
+    [Prismic.predicates.at('document.type', 'repeatable')],
     {
-      fetch: ['posts.slug'],
+      fetch: ['repeatable.slug'],
     }
   );
 
