@@ -110,14 +110,10 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicClient();
-  const postsResponse = await prismic.query(
-    [Prismic.predicates.at('document.type', 'repeatable')],
-    {
-      fetch: ['repeatable.title', 'repeatable.subtitle', 'repeatable.author'],
-      pageSize: 2,
-    }
-  );
+  const prismic = getPrismicClient({});
+  const postsResponse = await prismic.getByType<any>('repeatable', {
+    pageSize: 1,
+  });
 
   const posts = postsResponse.results.map(
     (post: Post) =>

@@ -137,13 +137,10 @@ export default function Post({ post }: PostProps): JSX.Element {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const prismic = getPrismicClient();
-  const posts = await prismic.query(
-    [Prismic.predicates.at('document.type', 'repeatable')],
-    {
-      fetch: ['repeatable.slug'],
-    }
-  );
+  const prismic = getPrismicClient({});
+  const posts = await prismic.getByType<any>('repeatable', {
+    fetch: ['repeatable.slug'],
+  });
 
   const params = posts.results.map(post => ({
     params: { slug: post.uid },
@@ -158,7 +155,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params;
 
-  const prismic = getPrismicClient();
+  const prismic = getPrismicClient({});
   const response = await prismic.getByUID('repeatable', String(slug), {});
 
   const postData = {
